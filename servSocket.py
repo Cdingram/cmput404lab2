@@ -27,27 +27,26 @@ while True:
 				part = incomingSocket.recv(1024)
 			except socket.error as exception:
 				if exception.errorno == 11:
-					pass
+					part = None
 				else:
 					raise
 			if(part):
 				request.extend(part)
 				outgoingSocket.sendall(part)
-			else:
-				break
+			
 			outogingSocket.setblocking(0)
 			try:
 				part = outgoingSocket.recv(1024)
 			except socket.error as exception:
 				if exception.errorno == 11:
-					pass
+					part = None
 				else:
 					raise 
 			if(part):
 				request.extend(part)
 				incomingSocket.sendall(part)
-			else:
-				break
+			select.select([incomingSocket, outgoingSocket], [], [incomingSocket, outgoingSocket], 1)
+			
 		print request
 		sys.exit(0)
 	else:
