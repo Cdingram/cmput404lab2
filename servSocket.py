@@ -3,6 +3,7 @@
 import socket, os, sys
 
 serverSocket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+serverSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR,1)
 
 serverSocket.bind(("0.0.0.0", 12345))
 
@@ -45,7 +46,7 @@ while True:
 			if(part):
 				request.extend(part)
 				incomingSocket.sendall(part)
-			select.select([incomingSocket, outgoingSocket], [], [incomingSocket, outgoingSocket], 1)
+			select.select([incomingSocket, outgoingSocket], [], [incomingSocket, outgoingSocket], 1.0)
 			
 		print request
 		sys.exit(0)

@@ -45,8 +45,7 @@ while True:
 			if(part):
 				request.extend(part)
 				incomingSocket.sendall(part)
-			select.select(
-				[incomingSocket, outgoingSocket]
+			select.select([incomingSocket, outgoingSocket], [], [incomingSocket, outgoingSocket], 1.0)
 			
 		print request
 		sys.exit(0)
